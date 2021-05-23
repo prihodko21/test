@@ -69,9 +69,7 @@ class EmployeeDetail(generics.RetrieveUpdateDestroyAPIView):
   def delet(self, request, pk):
     article = self.get_object(pk)
     article.delete()
-    return Response({
-      "message": "Employee with id `{}` has been deleted.".format(pk)
-    }, status=204)
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
@@ -124,9 +122,7 @@ class ImporterDetail(generics.RetrieveUpdateDestroyAPIView):
   def delet(self, request, pk):
     importer = self.get_object(pk)
     importer.delete()
-    return Response({
-      "message": "Employee with id `{}` has been deleted.".format(pk)
-    }, status=204)
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ProductionTypeList(generics.ListCreateAPIView):
   queryset = ProductionType.objects.all()
@@ -208,9 +204,7 @@ class ScanDetail(generics.RetrieveUpdateDestroyAPIView):
   def delet(self, request, pk):
     importer = self.get_object(pk)
     importer.delete()
-    return Response({
-      "message": "Employee with id `{}` has been deleted.".format(pk)
-    }, status=204)
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class InvoiceDateFilter(django_filters.FilterSet):
@@ -248,8 +242,6 @@ class InvoicDetail(generics.RetrieveUpdateDestroyAPIView):
   def delet(self, request, pk):
     object = self.get_object(pk)
     object.delete()
-    return Response({
-      "message": "Employee with id `{}` has been deleted.".format(pk)
-    }, status=204)
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 

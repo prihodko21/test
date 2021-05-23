@@ -10,11 +10,15 @@ from django.core.mail import EmailMultiAlternatives
 from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.urls import reverse
-
+import random, string
 from django_rest_passwordreset.signals import reset_password_token_created
 from django.http import JsonResponse
 from rest_framework.decorators import api_view, permission_classes
+import pprint
 
+
+def generate_password(size):
+    return ''.join(random.sample(string.ascii_lowercase, size))
 
 class IsAdminUser(BasePermission):
     def has_permission(self, request, view):
@@ -37,10 +41,14 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 class RegisterAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
 
+
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
+
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)[1],
@@ -51,6 +59,7 @@ class LoginAPI(generics.GenericAPIView):
     serializer_class = LoginSerializer
 
     def post(self, request, *args, **kwargs):
+        request.data["user"]["password"] = generate_password(10)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
